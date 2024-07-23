@@ -45,14 +45,14 @@ function editarProducto(){
 
         let idSeleccionado = prompt(`
             Ingrese el id del producto que desea eliminar:
-            Puedes ingresar desde el 0 hasta el ${carrito.length-1}
+            Puedes ingresar: ${carrito.map(item => item.id)}.
         `)
     
-        if(idSeleccionado > carrito.length){
+        if(!carrito.map(item => item.id).includes(Number(idSeleccionado))){
             seguirIntentando = confirm(`Este id no es válido. Desea re intentar?`)
         }else{
             seguirIntentando = false;
-            idEditar = idSeleccionado;
+            idEditar = Number(idSeleccionado);
         }
     }while(seguirIntentando)
 }
@@ -62,10 +62,10 @@ function eliminarProducto(){
     do{
         let idSeleccionado = prompt(`
                 Ingrese el id del producto que desea eliminar:
-                Puedes ingresar desde el 0 hasta el ${carrito.length-1}
+                Puedes ingresar: ${carrito.map(item => item.id)}.
             `)
 
-        if(idSeleccionado > carrito.lenght)
+        if(!carrito.map(item => item.id).includes(Number(idSeleccionado)))
             alert(`Este id no es válido.`)
         else{
             alert(`
