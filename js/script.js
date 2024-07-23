@@ -2,7 +2,90 @@
 let confirmacion = false;
 let producto = {}; // el producto va a ser un objeto
 let carrito = []; // array de productos
-let continuar = true;
+let opcion;
+let idEditar = null;
+
+// Objeto
+const objetoConversor = {
+    //propiedades
+    almohadon:{
+        1: 'roma',
+        2: 'paris',
+        3: 'madrid'
+    },
+    color:{
+        1: 'beige',
+        2: 'terracota',
+        3: 'blanco'
+    },
+    talle:{
+        1: 'sm',
+        2: 'md',
+        3: 'lg'
+    }
+}
+
+function continuar(){
+    do{
+        opcion = prompt(`
+            Para continuar elija una opcion:
+            1- Agregar un producto
+            2- Editar un producto
+            3- Eliminar un producto
+            4- Finalizar compra`)
+        if(!['1','2','3','4'].includes(opcion))
+            alert('Por favor, ingrese un número válido')
+
+    }while( !['1','2','3','4'].includes(opcion));
+}
+
+function editarProducto(){
+    let seguirIntentando;
+    do{
+
+        let idSeleccionado = prompt(`
+            Ingrese el id del producto que desea eliminar:
+            Puedes ingresar desde el 0 hasta el ${carrito.length-1}
+        `)
+    
+        if(idSeleccionado > carrito.length){
+            seguirIntentando = confirm(`Este id no es válido. Desea re intentar?`)
+        }else{
+            seguirIntentando = false;
+            idEditar = idSeleccionado;
+        }
+    }while(seguirIntentando)
+}
+
+function eliminarProducto(){
+    let seguirEliminando;
+    do{
+        let idSeleccionado = prompt(`
+                Ingrese el id del producto que desea eliminar:
+                Puedes ingresar desde el 0 hasta el ${carrito.length-1}
+            `)
+
+        if(idSeleccionado > carrito.lenght)
+            alert(`Este id no es válido.`)
+        else{
+            alert(`
+                Eliminaste el producto:
+                ${JSON.stringify(carrito[idSeleccionado])}
+            `)
+            carrito = carrito.filter(producto => producto.id !== Number(idSeleccionado))
+            console.log('Se eliminó el id '+ idSeleccionado + ' : ', carrito);
+        }
+
+        if(carrito.length > 0)
+            seguirEliminando = confirm(`
+                Desea eliminar otro producto?
+            `)
+        else{
+            seguirEliminando = false
+            alert('El carrito está vacío')
+        }
+    }while(seguirEliminando)
+}
 
 // Ciclo do-while 
 // Ejecuta todo el proceso al menos una vez
@@ -36,36 +119,11 @@ do {
     function validarEntradas (dato) {
         return ['1','2','3'].includes(dato)
     }
-    // Objeto
-    const objetoConversor = {
-        //propiedades
-        almohadon:{
-            1: 'roma',
-            2: 'paris',
-            3: 'madrid'
-        },
-        color:{
-            1: 'beige',
-            2: 'terracota',
-            3: 'blanco'
-        },
-        talle:{
-            1: 'sm',
-            2: 'md',
-            3: 'lg'
-        }
-    }
-    // Validacion 
-    // Comparación && --> 
-    // false && true = false
-    // false && false = false
-    // true && false = false
-    // true && true = true
-    
     
     if(isValidTipo && isValidColor && isValidTalle){ // aca se observan las flags
         // Aca armo mi producto
         producto = {
+            id: carrito.length,
             almohadon: `${objetoConversor.almohadon[tipoAlmohadon]}`,
             color: `${objetoConversor.color[colorAlmohadon]}`,
             talle: `${objetoConversor.talle[talleAlmohadon]}`
@@ -78,26 +136,53 @@ do {
             Color: ${objetoConversor.color[colorAlmohadon]}
             Talle: ${objetoConversor.talle[talleAlmohadon]}
     
-            Agregar al carrito o que?
+            Agregar al carrito?
         `)
     }else{
         // Mensaje fallido
         alert('Has ingresado una o varias opciones inválidas.')
     }
-    
-    if(confirmacion){
-        alert('Agregado al carrito')
-        carrito.push(producto)
-        console.log('CARRITO: ', carrito);
+    console.log('EDITAR: ', idEditar);
+    if(idEditar){
+        if(confirmacion){
+            alert(`
+                Producto anterior:
+                ${JSON.stringify(carrito[idEditar])}
+                Producto Editado Exitosamente:
+                ${JSON.stringify(producto)}
+            `)
+            carrito[idEditar] = { ...producto, id: idEditar};
+            console.log('Carrito Editado: ', carrito);
+            idEditar = null;
+        }else{
+            alert('No se agrego al carrito')
+        }
     }else{
-        alert('No se agrego al carrito')
+        if(confirmacion){
+            alert(`
+            Agregado al carrito:
+            para ver la lista del carrito
+            abrir la consola.`)
+            carrito.push(producto)
+            console.log('CARRITO: ', carrito);
+        }else{
+            alert('No se agrego al carrito')
+        }
     }
 
-    continuar = confirm(` Desea continuar comprando?`)
-} while (continuar);
+    continuar();
 
-// Siguente fase del proceso de compra
-// 1- Visualizar la lista de productos
-// 2- Ofrecer opcion de modificar esa lista
-// 3- Opcional: manejo de stocks
+    switch(opcion){
+        case '2':
+            editarProducto();
+            break;
+        case '3':
+            eliminarProducto();
+            break;
+        case '4':
+            console.log('Compra finalizada. El carrito contiene: ', carrito);
+            break;
+    }
+
+} while (opcion === '1' || opcion === '2');
 
