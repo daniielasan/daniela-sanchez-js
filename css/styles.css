@@ -5,3 +5,19 @@
 p{
     font-size: 20px;
 }
+
+.almohada-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.item-img{
+    align-self: center;
+    height: 10rem;
+    width: 10rem;
+}
+
+.item-button{
+    align-self: center;
+}
