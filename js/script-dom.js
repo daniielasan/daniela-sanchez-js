@@ -34,13 +34,13 @@ const ordenGeneral = {
 }
 
 const buySelection = (key, cardContainer, div) =>{
+    
     carrito.push(ordenGeneral[key])
     console.log('CARRITO: ', carrito);
     resetSelection(key, cardContainer, div)
 }
 
 const resetSelection = (key, container, child) =>{
-    console.log(ordenGeneral[key]);
     ordenGeneral[key] = {
         accum: 0,
         open: false,
@@ -54,13 +54,14 @@ const resetSelection = (key, container, child) =>{
     container.removeChild(child)
 }
 
-const setSelectedColor = (key, color) => {
+const setSelectedColor = (key, color, buyButton) => {
     ordenGeneral[key].selectedColor ={
         beige: false,
         white: false,
         terracota: false,
         [color]: true
     }
+    buyButton.disabled = !Object.values(ordenGeneral[key].selectedColor).some(value => value)
 };
 
 const colorSelection = (key) => {
@@ -88,11 +89,14 @@ const colorSelection = (key) => {
         cardContainer.appendChild(div)
         ordenGeneral[key].open = true;
 
+        const buyButton = document.getElementById(`color-${key}-buy`)
+        buyButton.disabled = !Object.values(ordenGeneral[key].selectedColor).some(value => value)
+
         colores.forEach(color => {
-            document.getElementById(`color-${color}`).addEventListener('click', () => setSelectedColor(key, color))
+            document.getElementById(`color-${color}`).addEventListener('click', () => setSelectedColor(key, color, buyButton))
         });
 
-        document.getElementById(`color-${key}-buy`).addEventListener('click', () => buySelection(key, cardContainer, div))
+        buyButton.addEventListener('click', () => buySelection(key, cardContainer, div))
         document.getElementById(`color-${key}-reset`).addEventListener('click', () => resetSelection(key, cardContainer, div))
     }else if( ordenGeneral[key].open === true && ordenGeneral[key].accum === 0) {
         cardContainer.removeChild(document.getElementById(`colors-${key}`));
