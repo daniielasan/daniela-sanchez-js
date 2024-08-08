@@ -2,7 +2,7 @@ const almohadonesContainer = document.getElementById('almohadones-container');
 
 const almohadones = ['Roma', 'Paris', 'Madrid']
 const colores = ['beige', 'terracota','white']
-
+const carrito = []
 const ordenGeneral = {
     Roma: {
         accum: 0,
@@ -33,9 +33,12 @@ const ordenGeneral = {
     }
 }
 
-const buySelection = () =>{
-
+const buySelection = (key, cardContainer, div) =>{
+    carrito.push(ordenGeneral[key])
+    console.log('CARRITO: ', carrito);
+    resetSelection(key, cardContainer, div)
 }
+
 const resetSelection = (key, container, child) =>{
     console.log(ordenGeneral[key]);
     ordenGeneral[key] = {
@@ -89,7 +92,7 @@ const colorSelection = (key) => {
             document.getElementById(`color-${color}`).addEventListener('click', () => setSelectedColor(key, color))
         });
 
-        document.getElementById(`color-${key}-buy`).addEventListener('click', () => buySelection(key))
+        document.getElementById(`color-${key}-buy`).addEventListener('click', () => buySelection(key, cardContainer, div))
         document.getElementById(`color-${key}-reset`).addEventListener('click', () => resetSelection(key, cardContainer, div))
     }else if( ordenGeneral[key].open === true && ordenGeneral[key].accum === 0) {
         cardContainer.removeChild(document.getElementById(`colors-${key}`));
