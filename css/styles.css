@@ -21,3 +21,34 @@ p{
 .item-button{
     align-self: center;
 }
+.card{
+    background-color: rgb(177, 152, 119) !important;
+}
+.colors-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.title-color{
+    text-align: center;
+}
+.beige{
+    background-color: beige;
+    height: 5rem;
+    width: 5rem;
+}
+.white{
+    background-color: white;
+    height: 5rem;
+    width: 5rem;
+}
+.terracota{
+    background-color: burlywood;
+    height: 5rem;
+    width: 5rem;
+}
+.colors-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
