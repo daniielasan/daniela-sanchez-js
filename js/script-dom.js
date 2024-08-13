@@ -1,5 +1,11 @@
 const almohadonesContainer = document.getElementById('almohadones-container');
 
+localStorage.setItem("descripciones", JSON.stringify({
+    "Paris": "Excelente calidad de  algodón mediterraneo. Suave al tacto, ideal para decorar interiores",
+    "Madrid": "Material semi sintetico extremada mente resistenete, ideal para ser usado en exteriores",
+    "Roma": "Material sintetico impermeable de alta calidad, ideal para ser usado muebles de playas o albercas"
+}))
+
 const almohadones = ['Roma', 'Paris', 'Madrid']
 const colores = ['beige', 'terracota','white']
 const carrito = []
@@ -37,6 +43,7 @@ const buySelection = (key, cardContainer, div) =>{
     
     carrito.push(ordenGeneral[key])
     console.log('CARRITO: ', carrito);
+    localStorage.setItem('carrito', JSON.stringify(carrito))
     resetSelection(key, cardContainer, div)
 }
 
@@ -68,7 +75,7 @@ const colorSelection = (key) => {
     const cardContainer = document.getElementById(`card-container-${key}`);
     const div = document.createElement('div');
     div.id = `colors-${key}` 
-    div.classList.add('card')
+    div.classList.add('color-card')
     div.style.width = '16rem'
     div.innerHTML = `
     <div class="colors-container">
@@ -78,7 +85,7 @@ const colorSelection = (key) => {
             <p id="color-white" class="white">blanco</p>
             <p id="color-terracota" class="terracota">terra</p>
         </div>
-        <div>
+        <div class="footer">
             <button id="color-${key}-buy" type="button" class="btn btn-success item-button">Comprar</button>
             <button id="color-${key}-reset" type="button" class="btn btn-danger item-button">Reset</button>
         </div>
@@ -116,16 +123,17 @@ const accumItem = (key, tag) =>{
 }
 
 for (const key of almohadones) {
+    const descripcion = JSON.parse(localStorage.getItem("descripciones"))[key]
     const child = `
     <div id="card-container-${key}" class="card" style="width: 18rem;">
         <img class="item-img" src="../assets/${key.toLowerCase()}.jpeg" class="card-img-top" alt="...">
         <div class="card-body">
             <h5 id="card-title-${key}" class="card-title">${key} (${ordenGeneral[key].accum})</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <div>
-                <button id="card-${key}-add" type="button" class="btn btn-success item-button">Agregar</button>
-                <button id="card-${key}-sus" type="button" class="btn btn-danger item-button">Restar</button>
-            </div>
+            <p class="card-text">${descripcion}</p>
+        </div>
+        <div class="footer">
+            <button id="card-${key}-add" type="button" class="btn btn-success item-button">Agregar</button>
+            <button id="card-${key}-sus" type="button" class="btn btn-danger item-button">Restar</button>
         </div>
     </div>
     `
